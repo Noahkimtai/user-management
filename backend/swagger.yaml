@@ -1,0 +1,221 @@
+openapi: 3.0.0
+info:
+  title: User Management
+  description: |-
+    A Server-side API built on NodeJS and MongoDB for User Management.
+
+    Features of the APP
+    - Registration of users
+    - Login 
+    - Reset Password
+    - Update user details
+    - Display list of all users
+    - All the users details are stored in database with encryption
+
+    [Github Link](https://github.com/NoahNoahkimtai)
+  contact:
+    email: noahkimtai24@gmail.com
+  version: "1.0"
+
+paths:
+  /api/v1/user/register:
+    post:
+      tags:
+        - Auth
+      summary: User Registration
+      operationId: UserRegistration
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              required:
+                - name
+                - email
+                - phone
+                - password
+                - confirm_password
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: user
+                email:
+                  type: string
+                  example: user@xyz.com
+                phone:
+                  type: integer
+                  example: 1111111111
+                password:
+                  type: string
+                  example: 12345
+                confirm_password:
+                  type: string
+                  example: 12345
+      responses:
+        "200":
+          description: Registration successful
+
+  /api/v1/user/login:
+    post:
+      tags:
+        - Auth
+      summary: User Login
+      operationId: UserLogin
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              required:
+                - email
+                - password
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: user@xyz.com
+                password:
+                  type: string
+                  example: 12345
+      responses:
+        "200":
+          description: Login successful
+
+  /api/v1/user/get-users:
+    get:
+      tags:
+        - User
+      summary: All Registered Users
+      operationId: AllRegisteredUsers
+      responses:
+        "200":
+          description: user
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Error deleting user
+        
+  /api/v1/user/get-user/{email}:
+    get:
+      tags:
+        - User
+      summary: Get a registered user
+      parameters:
+        - name: email
+          in: path
+          required: true
+          description: Email of the user to get
+          schema:
+            type: string
+            example: user@xyz.com
+      responses:
+        '200':
+          description: user found
+        '404':
+          description: User not found
+        '500':
+          description: Server error
+
+
+  /api/v1/user/delete/{email}:
+    delete:
+      summary: Delete user by email
+      tags:
+        - Users
+      parameters:
+        - name: email
+          in: path
+          required: true
+          description: Email of the user to delete
+          schema:
+            type: string
+            example: user@xyz.com
+      responses:
+        '200':
+          description: User deleted successfully
+        '404':
+          description: User not found
+        '500':
+          description: Server error
+
+
+  /api/v1/user/reset-password:
+    post:
+      tags:
+        - User
+      summary: Reset Password
+      operationId: ResetPassword
+      security:
+        - bearer: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              required:
+                - password
+                - new_password
+                - confirm_password
+              type: object
+              properties:
+                password:
+                  type: string
+                  example: 12345
+                new_password:
+                  type: string
+                  example: 67890
+                confirm_password:
+                  type: string
+                  example: 67890
+      responses:
+        "200":
+          description: Password reset successful
+
+  /api/v1/user/update-user:
+    post:
+      tags:
+        - User
+      summary: Update User
+      operationId: UpdateUser
+      security:
+        - bearer: []
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              required:
+                - name
+                - phone
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: John Doe
+                phone:
+                  type: integer
+                  example: 7903464439
+      responses:
+        "200":
+          description: User updated successfully
+
+components:
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+
+security: []
+
+tags:
+  - name: Auth
+    description: User authentication routes
+  - name: User
+    description: Protected and user-specific routes
