@@ -1,5 +1,3 @@
-version: '1.0'
-
 services:
   mongodb:
     image: mongo:6
@@ -13,6 +11,31 @@ services:
       - MONGO_INITDB_PASSWORD=${MONGO_INITDB_PASSWORD}
     volumes:
       - mongo_data:/data/db
+
+  # backend:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: user-management-backend
+  #   restart: always
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     - MONGO_URI=mongodb://mongodb:27017/${MONGO_INITDB_DATABASE}
+  #     - NODE_ENV=development
+  #   depends_on:
+  #     - mongodb
+
+  # frontend:
+  #   build:
+  #     context: ../frontend
+  #     dockerfile: Dockerfile
+  #   container_name: user-management-frontend
+  #   restart: always
+  #   ports:
+  #     - "5173:5173"
+  #   depends_on:
+  #     - backend
 
 volumes:
     mongo_data: {}
