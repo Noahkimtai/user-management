@@ -1,0 +1,99 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f4f4f8;
+  margin: 0;
+  padding: 0;
+
+  /* --- Add these lines for centering --- */
+  display: flex; /* Makes the body a flex container */
+  justify-content: center; /* Centers content horizontally */
+  align-items: center; /* Centers content vertically */
+  min-height: 100vh; /* Ensures the body takes full viewport height */
+  flex-direction: column; /* Stacks children vertically if there are multiple */
+}
+
+h1 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+input {
+  padding: 10px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border 0.3s ease;
+}
+
+input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+button {
+  padding: 12px;
+  margin-top: 6px;
+  font-size: 1rem;
+  border: 12px solid;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  align-items: center;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.bg-green-500 {
+  background-color: #22c55e;
+}
+
+.bg-blue-500 {
+  background-color: #3b82f6;
+}
+
+.bg-yellow-500 {
+  background-color: #eab308;
+}
+
+.bg-purple-500 {
+  background-color: #8b5cf6;
+}
+
+.bg-red-500 {
+  background-color: #ef4444;
+}
+
+.text-white {
+  color: white;
+}
+
+.p-2 {
+  padding: 0.5rem;
+}
+
+.p-4 {
+  padding: 1rem;
+}
+
+.rounded {
+  border-radius: 6px;
+}
+
+.max-w-md {
+  max-width: 500px;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.space-y-4 > * + * {
+  margin-top: 1rem;
+}
