@@ -1,0 +1,718 @@
+{
+	"info": {
+		"_postman_id": "20bc606f-f9f9-4d99-9050-54aa6aac9b36",
+		"name": "api_tests",
+		"description": "Positive and Negative tests to validate user management APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28986276"
+	},
+	"item": [
+		{
+			"name": "Manage a VALID user",
+			"item": [
+				{
+					"name": "User Registration",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 200 OK\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has a success message\", function () {",
+									"    pm.expect(jsonData.message).to.exist;",
+									"    pm.expect(jsonData.message).to.eql(\"User registered successfully\"); ",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"    const jsonData = pm.response.json();",
+									"",
+									"    pm.test(\"Status code is 200 OK\", function () {",
+									"        pm.response.to.have.status(200);",
+									"    });",
+									"",
+									"    pm.test(\"Response has a success message\", function () {",
+									"        pm.expect(jsonData.message).to.exist;",
+									"        pm.expect(jsonData.message).to.eql(\"User registered successfully\"); ",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"user\",\n  \"email\": \"user@xyz.com\",\n  \"phone\": 1111111111,\n  \"password\": \"12345\",\n  \"confirm_password\": \"12345\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"register"
+							]
+						},
+						"description": "Create a new transaction between the `fromAccount` and `toAccount`"
+					},
+					"response": []
+				},
+				{
+					"name": "User Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 200 OK\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has a success message\", function () {",
+									"    pm.expect(jsonData.message).to.exist;",
+									"    pm.expect(jsonData.message).to.eql(\"Sign in successfull\"); ",
+									"});",
+									"",
+									"pm.test(\"Response contains 'data' object\", function () {",
+									"    pm.expect(jsonData.data).to.exist;",
+									"    pm.expect(typeof jsonData.data).to.eql('object');",
+									"});",
+									"",
+									"pm.test(\"Data object contains 'token'\", function () {",
+									"    pm.expect(jsonData.data.token).to.exist;",
+									"    pm.expect(typeof jsonData.data.token).to.eql('string');",
+									"});",
+									"",
+									"pm.test(\"Token is not empty\", function () {",
+									"    pm.expect(jsonData.data.token.length).to.be.above(0);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Generate the payload data for the create user request",
+									"",
+									"let fullName = `${pm.variables.replaceIn(\"{{$randomFirstName}}\")} ${pm.variables.replaceIn(\"{{$randomLastName}}\")}`;",
+									"",
+									"let payload = {",
+									"    \"owner\": `${fullName} - FromAccount`,",
+									"    \"balance\": 50,",
+									"    \"currency\": \"COSMIC_COINS\"",
+									"}",
+									"",
+									"// Store the payload in a runtime-only variable ",
+									"pm.variables.set('payload', JSON.stringify(payload));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"user@xyz.com\",\n  \"password\": \"12345\",\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						},
+						"description": "Generates a new account (`fromAccount`), that the funds will be transferred from, and saves the following information if the request is successful:\n\n- Account owner from the request body (saved as collection variable `e2e_user_name_from`)\n- Account id from the response body (saved as collection variable `e2e_user_account_id_from`)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Registered Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"    const response = pm.response.json();",
+									"    pm.test(\"Status code is 200 OK\", function () {",
+									"        pm.response.to.have.status(200);",
+									"    });",
+									"",
+									"    pm.test(\"Should contain a users 'array' in the response\", function () {",
+									"        pm.expect(response.users).to.be.an('array');",
+									"    });",
+									"",
+									"    pm.test(\"Response has a All registered users message\", function () {",
+									"        pm.expect(response.message).to.exist;",
+									"        pm.expect(response.message).to.eql(\"All registered users\"); ",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/get-users",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"get-users"
+							]
+						},
+						"description": "Get a list of all transactions to and from the `toAccount`"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a Single Registered User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"pm.test(\"Status code is 200 OK\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Should contain a user object in the response\", function () {",
+									"    pm.expect(response.user).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Response has a User found message\", function () {",
+									"    pm.expect(response.message).to.exist;",
+									"    pm.expect(response.message).to.eql(\"User found\"); ",
+									"});",
+									"",
+									"pm.test(\"User object is not empty\", function () {",
+									"    pm.expect(Object.keys(response.user).length).to.be.above(0);",
+									"});",
+									"",
+									"pm.test(\"User object has 'name' field (string)\", function () {",
+									"    pm.expect(response.user.name).to.exist;",
+									"    pm.expect(typeof response.user.name).to.eql('string');",
+									"});",
+									"",
+									"pm.test(\"User object has 'email' field (string)\", function () {",
+									"    pm.expect(response.user.email).to.exist;",
+									"    pm.expect(typeof response.user.email).to.eql('string');",
+									"});",
+									"",
+									"pm.test(\"User object has 'phone' field (string/number)\", function () {",
+									"    pm.expect(response.user.phone).to.exist;",
+									"    pm.expect(typeof response.user.phone === 'string' || typeof response.user.phone === 'number').to.be.true;",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/get-user/user%40xyz.com",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"get-user",
+								"user%40xyz.com"
+							]
+						},
+						"description": "Get the details of an individual transaction, using the first transaction id from the list of transactions obtained in step \\[6\\]."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a user account",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"pm.test(\"Status check\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has a User deleted successfully message\", function () {",
+									"    pm.expect(response.message).to.exist;",
+									"    pm.expect(response.message).to.eql(\"User deleted successfully\"); ",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/delete/user%40xyz.com",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"delete",
+								"user%40xyz.com"
+							]
+						},
+						"description": "Delete the `toAccount` account to clean up after this test case."
+					},
+					"response": []
+				}
+			],
+			"description": "This folder tests a commonly used workflow of creating new user, login and fetching one or all users",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//all requests in this folder should be valid",
+							"pm.test(\"Folder-level status check\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Attempt an INVALID user",
+			"item": [
+				{
+					"name": "run me first to generate test data",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a Single Registered User with unregistered email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"    const response = pm.response.json();",
+									"    pm.test(\"Status code is 404 Not Found\", function () {",
+									"        pm.response.to.have.status(404);",
+									"    });",
+									"",
+									"    pm.test(\"Response has a User found message\", function () {",
+									"        pm.expect(response.message).to.exist;",
+									"        pm.expect(response.message).to.eql(\"User not found\"); ",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/get-user/user%40xyz.com",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"get-user",
+								"user%40xyz.com"
+							]
+						},
+						"description": "Get the details of an individual transaction, using the first transaction id from the list of transactions obtained in step \\[6\\]."
+					},
+					"response": []
+				},
+				{
+					"name": "User Login with unregistered email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"    const jsonData = pm.response.json();",
+									"",
+									"    pm.test(\"Status code is 422 Unprocessable Entity\", function () {",
+									"        pm.response.to.have.status(422);",
+									"    });",
+									"",
+									"    pm.test(\"Response has a \tUser does not exists message\", function () {",
+									"        pm.expect(jsonData.message).to.exist;",
+									"        pm.expect(jsonData.message).to.eql(\"User does not exists\"); // Use the exact string from your JSON",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n    \"email\": \"unregistereduser@xyz.com\",\n    \"password\": \"12345\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Login with wrong password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"    const jsonData = pm.response.json();",
+									"",
+									"    pm.test(\"Status code is 422 Unprocessable Entity\", function () {",
+									"        pm.response.to.have.status(422);",
+									"    });",
+									"",
+									"    pm.test(\"Response has a \tUser does not exists message\", function () {",
+									"        pm.expect(jsonData.message).to.exist;",
+									"        pm.expect(jsonData.message).to.eql(\"Incorrect username / password\"); // Use the exact string from your JSON",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n    \"email\": \"user@xyz.com\",\n    \"password\": \"1235\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Registration with invalid user data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"    const jsonData = pm.response.json();",
+									"",
+									"    pm.test(\"Status code is 500 Internal Server Error\", function () {",
+									"        pm.response.to.have.status( 500);",
+									"    });",
+									"",
+									"    pm.test(\"Response has a success message\", function () {",
+									"        pm.expect(jsonData.message).to.exist;",
+									"        pm.expect(jsonData.message).to.eql(\"Internal Server Error. Please try again!!\"); ",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n    \"name\": \"\",\n    \"email\": \"\",\n    \"phone\": 1111111111,\n    \"password\": \"\",\n    \"confirm_password\": \"\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Registration without password confirmation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"    const jsonData = pm.response.json();",
+									"",
+									"    pm.test(\"Status code is 401 Unauthorized\", function () {",
+									"        pm.response.to.have.status( 401);",
+									"    });",
+									"",
+									"    pm.test(\"Response has a Passwords do not match message\", function () {",
+									"        pm.expect(jsonData.message).to.exist;",
+									"        pm.expect(jsonData.message).to.eql(\"Passwords do not match. Please try again\"); ",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n    \"name\": \"user\",\n    \"email\": \"user34@xyz.com\",\n    \"phone\": 1111111111,\n    \"password\": \"12345\",\n    \"confirm_password\": \"12\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Registration with registered email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"    const jsonData = pm.response.json();",
+									"",
+									"    pm.test(\"Status code is 422 Unprocessable Entity\", function () {",
+									"        pm.response.to.have.status( 422);",
+									"    });",
+									"",
+									"    pm.test(\"Response has a Email already exists message\", function () {",
+									"        pm.expect(jsonData.message).to.exist;",
+									"        pm.expect(jsonData.message).to.eql(\"Email already exists.\"); ",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n    \"name\": \"user\",\n    \"email\": \"user@xyz.com\",\n    \"phone\": 1111111111,\n    \"password\": \"12345\",\n    \"confirm_password\": \"12345\"\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "This folder tests a commonly used negative workflow of creating new user, login and fetching one or all users."
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080/api/v1/user",
+			"type": "string"
+		}
+	]
+}
