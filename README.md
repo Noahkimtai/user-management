@@ -2,6 +2,9 @@
 
 This repository contains the backend API, frontend application, Playwright end-to-end tests, and Postman API tests for a User Management system.
 
+
+* [Go to test plan](test_plan.md)
+
 ## Table of Contents
 
 1.  [Prerequisites](#1-prerequisites)
