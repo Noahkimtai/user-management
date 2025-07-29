@@ -12,10 +12,7 @@ router.post("/register", userController.registerUser);
 router.post("/login", userController.createSession);
 
 // UPDATE USER ROUTE - reqiures autentication
-router.post(
-  "/update-user",
-  passport.authenticate("jwt", { session: false }),
-  userController.updateUser
+router.put("/update-user/:email", userController.updateUser
 );
 
 // FETCHING ALL USERS ROUTE

@@ -6,7 +6,7 @@ import { users } from '../Data/userData';
 import { Registration } from './pages/Registeration';
 
 
-test('Landing page', async({page}) => {
+test('Landing page displays Login, Register and Header texts', async({page}) => {
   const landingPage = new LandingPage(page);
 
   await landingPage.goto('http://localhost:5173/');
@@ -15,7 +15,7 @@ test('Landing page', async({page}) => {
   await expect(landingPage.registerButton).toBeVisible();
 });
 
-test('register new user', async({page}) => {
+test('User can register new user', async({page}) => {
   const landingPage = new LandingPage(page);
   await landingPage.goto('http://localhost:5173/');
   await landingPage.openRegistrationPage();
@@ -35,7 +35,7 @@ test('register new user', async({page}) => {
   await expect(page.getByRole('heading', { name: 'Login' })).toBeVisible();
 });
 
-test('register duplicate email', async({page}) => {
+test('User can not register duplicate email', async({page}) => {
   const landingPage = new LandingPage(page);
   await landingPage.goto('http://localhost:5173/');
   await landingPage.openRegistrationPage();
@@ -51,10 +51,10 @@ test('register duplicate email', async({page}) => {
   const registerAlertMessage = dialog.message();
   await dialog.dismiss().catch(() => {});
 
-  await expect(registerAlertMessage).toBe("Email already exists."); // on failure "Email already exists."
+  await expect(registerAlertMessage).toBe("Email already exists.");
 });
 
-test('register new user with empty input data', async({page}) => {
+test('User can not register new user with empty input data', async({page}) => {
   const landingPage = new LandingPage(page);
   await landingPage.goto('http://localhost:5173/');
   await landingPage.openRegistrationPage();
@@ -73,7 +73,7 @@ test('register new user with empty input data', async({page}) => {
   await expect(registerAlertMessage).toBe("Internal Server Error. Please try again!!");
 });
 
-test('login valid', async({page}) => {
+test('User can login with valid', async({page}) => {
 
   const landingPage = new LandingPage(page);
   await landingPage.goto('http://localhost:5173/');
@@ -85,7 +85,7 @@ test('login valid', async({page}) => {
   await expect(page.getByRole('textbox', { name: 'Email' })).toHaveValue(users.valid.email);
 });
 
-test('login with wrong credentials password', async({page}) => {
+test('User can  not login with wrong credentials password', async({page}) => {
 
   const landingPage = new LandingPage(page);
   await landingPage.goto('http://localhost:5173/');
@@ -106,7 +106,7 @@ test('login with wrong credentials password', async({page}) => {
 
 });
 
-test('login with wrong credentials email', async({page}) => {
+test('User can not login with wrong credentials email', async({page}) => {
 
   const landingPage = new LandingPage(page);
   await landingPage.goto('http://localhost:5173/');
@@ -127,7 +127,7 @@ test('login with wrong credentials email', async({page}) => {
 
 });
 
-test('update profile', async({page}) => {
+test('User can update profile', async({page}) => {
 
   const landingPage = new LandingPage(page);
   await landingPage.goto('http://localhost:5173/');
@@ -136,10 +136,17 @@ test('update profile', async({page}) => {
   await loginPage.login(users.valid.email, users.valid.password)
 
   const accountmanagementPage = new AccountManagement(page);
+  const dialogPromise = page.waitForEvent('dialog');
   await accountmanagementPage.updateProfile(users.update.name, users.update.phone);
+  const dialog = await dialogPromise;
+
+  const registerAlertMessage = dialog.message();
+  await dialog.dismiss().catch(() => {});
+
+  await expect(registerAlertMessage).toBe("User details updated successfully");
 });
 
-test('delete', async({page}) => {
+test('User can delete account', async({page}) => {
 
   const landingPage = new LandingPage(page);
   await landingPage.goto('http://localhost:5173/');

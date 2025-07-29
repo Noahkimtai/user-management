@@ -95,19 +95,27 @@ module.exports.createSession = async (req, res) => {
 
 // UPDATE USER - accepts user name and user phone no and updates them.
 module.exports.updateUser = async (req, res) => {
-
-  if(req.user){
     try{
-
-      let user = await User.findOne({email: req.user.email});
+      const email = req.params.email;
+      let user = await User.findOne({email: email});
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
 
       user.name = encryption.encryptData(req.body.name);
       user.phone = encryption.encryptData(req.body.phone);
 
       user.save();
 
+      var decryptedUser = {
+        name: encryption.decryptData(user.name),
+        email: user.email,
+        phone: encryption.decryptData(user.phone)
+      };
+
       return res.status(200).json({
-        message: 'User details updated successfully'
+        message: 'User details updated successfully',
+        user:decryptedUser
       })
 
 
@@ -117,9 +125,8 @@ module.exports.updateUser = async (req, res) => {
         message: 'Internal Server Error'
       })
     }
-  }
-  
 }
+
 
 
 // FETCH ALL USER 

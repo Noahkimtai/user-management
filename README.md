@@ -41,8 +41,8 @@ The backend is an API that handles user registration, authentication, and manage
 
 1.  **Clone the repository:**
     ```bash
-    git clone <git@github.com:Noahkimtai/user-management.git>
-    cd <user-management>/backend # Navigate to your backend directory
+    git clone git@github.com:Noahkimtai/user-management.git
+    cd user-management/backend # Navigate to your backend directory
     ```
 
 2.  **Install dependencies:**
@@ -53,7 +53,12 @@ The backend is an API that handles user registration, authentication, and manage
 3.  **Configure Environment Variables:**
     Rename the `.env_template` file to  `.env` in the `backend` directory. This file will store configurations information.
 
-4.  **Start the Backend Server:**
+4.  **Start the MongoDB container:**
+    The database for storing user information is set using a docker container.
+    ```bash
+    docker compose up -d
+    ```
+5.  **Start the Backend Server:**
     ```bash
     npm start
     ```

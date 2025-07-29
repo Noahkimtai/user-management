@@ -178,11 +178,19 @@ paths:
         "200":
           description: Password reset successful
 
-  /api/v1/user/update-user:
-    post:
+  /api/v1/user/update-user/{email}:
+    put:
       tags:
         - User
       summary: Update User
+      parameters:
+        - name: email
+          in: path
+          required: true
+          description: Email of the user to get
+          schema:
+            type: string
+            example: user@xyz.com
       operationId: UpdateUser
       security:
         - bearer: []

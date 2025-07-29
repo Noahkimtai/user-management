@@ -14,7 +14,7 @@ export default function ManageAccountPage() {
   const [activeView, setActiveView] = useState("main");
 
   const updateProfile = async () => {
-    const res = await fetch("http://localhost:8080/api/v1/user/update", {
+    const res = await fetch(`http://localhost:8080/api/v1/user/update-user/${email}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, name, phone }),
@@ -30,7 +30,7 @@ export default function ManageAccountPage() {
     });
     const data = await res.json();
     alert(data.message);
-    navigate("/login"); // Redirect after delete
+    navigate("/login");
   };
 
   return (
