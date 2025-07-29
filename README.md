@@ -62,7 +62,7 @@ The backend is an API that handles user registration, authentication, and manage
     ```bash
     npm start
     ```
-    The backend server should now be running, typically on `http://localhost:8080`.
+    The backend server should now be running, typically on `http://localhost:8080/`.
 
 ---
 
@@ -94,7 +94,7 @@ Playwright tests simulate user interactions with your frontend application to en
 
 1.  **Navigate to the tests directory:**
     ```bash
-    cd tests/
+    cd tests/functional_ui_tests
     ```
 1.  **Install Playwright dependencies:**
     ```bash
@@ -138,8 +138,8 @@ Your Postman collection contains automated API tests for your backend endpoints.
     * Give it a name (e.g., "User Management Local").
     * Add a variable:
         * **Variable:** `baseUrl`
-        * **Initial Value:** `http://localhost:8080` (or the base URL where your backend is running)
-        * **Current Value:** `http://localhost:8080`
+        * **Initial Value:** `http://localhost:8080/api/v1/user`
+        * **Current Value:** `http://localhost:8080/api/v1/user`
     * Click "Save".
     * Select this environment from the dropdown in the top-right corner of Postman.
 

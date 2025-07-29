@@ -290,6 +290,69 @@
 					"response": []
 				},
 				{
+					"name": "User Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 200 OK\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has a success message\", function () {",
+									"    pm.expect(jsonData.message).to.exist;",
+									"    pm.expect(jsonData.message).to.eql(\"User details updated successfully\"); ",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"    const jsonData = pm.response.json();",
+									"",
+									"    pm.test(\"Status code is 200 OK\", function () {",
+									"        pm.response.to.have.status(200);",
+									"    });",
+									"",
+									"    pm.test(\"Response has a success message\", function () {",
+									"        pm.expect(jsonData.message).to.exist;",
+									"        pm.expect(jsonData.message).to.eql(\"User registered successfully\"); ",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"new name\",\n  \"phone\": 2222222222,\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/update-user/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"update-user",
+								""
+							]
+						},
+						"description": "Create a new transaction between the `fromAccount` and `toAccount`"
+					},
+					"response": []
+				},
+				{
 					"name": "Delete a user account",
 					"event": [
 						{
@@ -679,6 +742,60 @@
 								"register"
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Update with unregistered email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 404 Not Found\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"pm.test(\"Response has a error message\", function () {",
+									"    pm.expect(jsonData.message).to.exist;",
+									"    pm.expect(jsonData.message).to.eql(\"User not found\"); ",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"new name\",\n  \"phone\": 2222222222,\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}update-user/unregistereduser%40xyz.com",
+							"host": [
+								"{{baseUrl}}update-user"
+							],
+							"path": [
+								"unregistereduser%40xyz.com"
+							]
+						},
+						"description": "Create a new transaction between the `fromAccount` and `toAccount`"
 					},
 					"response": []
 				}

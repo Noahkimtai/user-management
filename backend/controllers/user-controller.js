@@ -95,6 +95,7 @@ module.exports.createSession = async (req, res) => {
 
 // UPDATE USER - accepts user name and user phone no and updates them.
 module.exports.updateUser = async (req, res) => {
+
     try{
       const email = req.params.email;
       let user = await User.findOne({email: email});
