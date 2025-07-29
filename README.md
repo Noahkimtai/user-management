@@ -118,18 +118,15 @@ Your Postman collection contains automated API tests for your backend endpoints.
 
 ### Setup Steps:
 
-1.  **Download the Postman Collection JSON:**
-    Locate the exported Postman collection JSON file in your repository (e.g., `api-tests/user-management-api-tests.json`).
-
-2.  **Import the Collection into Postman:**
+1.  **Import the Collection into Postman:**
     * Open your Postman Desktop App.
     * Click on the **"Import"** button in the top-left corner.
-    * Select **"Upload Files"** and choose your Postman collection JSON file.
+    * Select **"Upload Files"** and choose your Postman collection JSON file(`tests/api_tests/api_tests.postman_collection.json`).
     * Click "Import".
     The collection will now appear in your "Collections" sidebar.
 
-3.  **Set up Postman Environment:**
-    Your Postman tests likely use an environment variable for the `baseUrl` (e.g., `{{baseUrl}}/api/v1/user/register`).
+2.  **Set up Postman Environment:**
+    Postman tests use an environment variable for the `baseUrl` (`{{baseUrl}}/api/v1/user/register`).
 
     * In Postman, click on the **"Environments"** tab in the left sidebar.
     * Click the `+` icon to create a new environment.
@@ -141,9 +138,6 @@ Your Postman collection contains automated API tests for your backend endpoints.
     * Click "Save".
     * Select this environment from the dropdown in the top-right corner of Postman.
 
-4.  **Ensure Backend is Running:**
-    For Postman API tests to run successfully, your backend API must be running (as described in section 2).
-
 ### Running Postman API Tests:
 
 1.  **Run a Single Request:**
@@ -152,14 +146,13 @@ Your Postman collection contains automated API tests for your backend endpoints.
     * Click the blue "Send" button.
     * The "Test Results" tab at the bottom will show if the tests associated with that request passed or failed.
 
-2.  **Run the Entire Collection (or a Folder):**
+2.  **Run the Entire Collection:**
     * In the "Collections" sidebar, hover over your imported collection (or a specific folder within it).
     * Click the `...` (More actions) menu.
-    * Select **"Run collection"** (or "Run folder").
+    * Select **"Run"**.
     * In the Collection Runner window:
-        * Ensure the desired requests/folders are checked.
-        * Select your "User Management Local" environment.
-        * Set the "Iterations" (e.g., 1 for a single run, or more for load/data-driven testing).
-        * Click the "Run <Collection Name>" button.
+        * Ensure the desired requests are checked.
+        * Set the "Iterations" to 1.
+        * Click the "Run api_tests" button.
     * The Collection Runner will display the results for each request and iteration.
  
