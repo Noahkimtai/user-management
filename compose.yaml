@@ -1,0 +1,55 @@
+services:
+  mongodb:
+    image: mongo:6
+    container_name: user-management-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+      - MONGO_INITDB_USERNAME=${MONGO_INITDB_USERNAME}
+      - MONGO_INITDB_PASSWORD=${MONGO_INITDB_PASSWORD}
+    volumes:
+      - mongo_data:/data/db
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: user-management-backend
+    restart: always
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./backend/.env
+    environment:
+      - MONGO_URL=mongodb://mongodb:27017/${MONGO_INITDB_DATABASE}
+      - NODE_ENV=development
+    depends_on:
+      - mongodb
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: user-management-frontend
+    restart: always
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+  tests:
+    build:
+      context: ./tests
+      dockerfile: Dockerfile
+    container_name: tests
+    restart: always
+    profiles: ['test']
+    depends_on:
+      - frontend
+    environment:
+      - BASE_URL=http://frontend:5173
+
+volumes:
+    mongo_data: {}

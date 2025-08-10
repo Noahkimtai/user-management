@@ -1,11 +1,11 @@
-import { test, expect, Page } from '@playwright/test'; // Import Page type for better typing
+import { test, expect, Page } from '@playwright/test';
 import { LandingPage } from './pages/LandingPage';
 
 let landingPage: LandingPage;
 
 test.beforeEach(async ({ page }) => {
   landingPage = new LandingPage(page);
-  await landingPage.goto('http://localhost:5173/');
+  await landingPage.goto('/');
 });
 
 test('Landing UI Page snapshot', async ({ page }) => {

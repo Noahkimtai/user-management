@@ -9,7 +9,7 @@ import { Registration } from './pages/Registeration';
 test('Landing page displays Login, Register and Header texts', async({page}) => {
   const landingPage = new LandingPage(page);
 
-  await landingPage.goto('http://localhost:5173/');
+  await landingPage.goto('/');
   await expect(landingPage.pageHeading).toBeVisible();
   await expect(landingPage.loginButton).toBeVisible();
   await expect(landingPage.registerButton).toBeVisible();
@@ -17,7 +17,7 @@ test('Landing page displays Login, Register and Header texts', async({page}) => 
 
 test('User can register new user', async({page}) => {
   const landingPage = new LandingPage(page);
-  await landingPage.goto('http://localhost:5173/');
+  await landingPage.goto('/');
   await landingPage.openRegistrationPage();
 
   const registrationPage = new Registration(page);
@@ -37,7 +37,7 @@ test('User can register new user', async({page}) => {
 
 test('User can not register duplicate email', async({page}) => {
   const landingPage = new LandingPage(page);
-  await landingPage.goto('http://localhost:5173/');
+  await landingPage.goto('/');
   await landingPage.openRegistrationPage();
 
   const registrationPage = new Registration(page);
@@ -56,7 +56,7 @@ test('User can not register duplicate email', async({page}) => {
 
 test('User can not register new user with empty input data', async({page}) => {
   const landingPage = new LandingPage(page);
-  await landingPage.goto('http://localhost:5173/');
+  await landingPage.goto('/');
   await landingPage.openRegistrationPage();
 
   const registrationPage = new Registration(page);
@@ -76,7 +76,7 @@ test('User can not register new user with empty input data', async({page}) => {
 test('User can login with valid', async({page}) => {
 
   const landingPage = new LandingPage(page);
-  await landingPage.goto('http://localhost:5173/');
+  await landingPage.goto('/');
   await landingPage.openLoginPage()
 
   const loginPage = new Login(page)
@@ -88,7 +88,7 @@ test('User can login with valid', async({page}) => {
 test('User can  not login with wrong credentials password', async({page}) => {
 
   const landingPage = new LandingPage(page);
-  await landingPage.goto('http://localhost:5173/');
+  await landingPage.goto('/');
   await landingPage.openLoginPage()
 
   const loginPage = new Login(page)
@@ -109,7 +109,7 @@ test('User can  not login with wrong credentials password', async({page}) => {
 test('User can not login with wrong credentials email', async({page}) => {
 
   const landingPage = new LandingPage(page);
-  await landingPage.goto('http://localhost:5173/');
+  await landingPage.goto('/');
   await landingPage.openLoginPage()
 
   const loginPage = new Login(page)
@@ -130,7 +130,7 @@ test('User can not login with wrong credentials email', async({page}) => {
 test('User can update profile', async({page}) => {
 
   const landingPage = new LandingPage(page);
-  await landingPage.goto('http://localhost:5173/');
+  await landingPage.goto('/');
   await landingPage.openLoginPage()
   const loginPage = new Login(page)
   await loginPage.login(users.valid.email, users.valid.password)
@@ -149,7 +149,7 @@ test('User can update profile', async({page}) => {
 test('User can delete account', async({page}) => {
 
   const landingPage = new LandingPage(page);
-  await landingPage.goto('http://localhost:5173/');
+  await landingPage.goto('/');
   await landingPage.openLoginPage()
 
   const loginPage = new Login(page)
